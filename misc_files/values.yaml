@@ -1,0 +1,13 @@
+kube-state-metrics:
+  metricLabelsAllowlist:
+    - pods=[kuberay, kubeflow, prometheus]
+    - deployments=[app.kubernetes.io/name,app.kubernetes.io/component,app.kubernetes.io/instance]
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+server:
+  global:
+    scrape_interval: 1s
+    scrape_timeout: 1s
+    evaluation_interval: 1s
