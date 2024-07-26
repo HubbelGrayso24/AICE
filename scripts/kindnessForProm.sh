@@ -49,5 +49,9 @@ helm repo update 1> /dev/null
 
 helm install prom prometheus-community/prometheus -f values.yaml 1> /dev/null
 
-kubectl port-forward svc/prom-prometheus 9090:9090 1> /dev/null
+kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=prometheus -n default --timeout=30s 1> /dev/null
+
+export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=prometheus,app.kubernetes.io/instance=prom" -o jsonpath="{.items[0].metadata.name}")
+  kubectl --namespace default port-forward $POD_NAME 9090 &
+
 echo "Prometheus is now running on http://localhost:9090"
